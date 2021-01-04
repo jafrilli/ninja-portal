@@ -1,0 +1,16 @@
+body {
+    background-image: url("https://franchiczar2.blob.core.windows.net/allfiles/assets/images/bg/bg.svg");
+    background-size: cover;
+    background-position: bottom center;
+    background-attachment: fixed;
+    background-color: #051b36;
+    transition: background-color .2s ease-in-out;
+    color: white;
+}
+
+.header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1.2rem;
+}

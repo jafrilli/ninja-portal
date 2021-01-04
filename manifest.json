@@ -1,0 +1,35 @@
+{  
+    "manifest_version": 2,
+    "version": "1.0.0",
+    "name": "Ninja Portal",
+    "author": "Jafar Ali",
+    "description": "A portal that limits online game activity.",
+    "background": {
+      "persistent": false,
+      "scripts": ["background.js"]
+    },
+    "content_scripts": [
+        {
+            "matches": [
+                "<all_urls>"
+            ],
+            "js": ["content.js"],
+            "run_at": "document_start",
+            "all_frames": true,
+            "match_about_blank": true
+        }
+    ],
+    "permissions": [
+        "activeTab",
+        "storage",
+        "declarativeContent",
+        "tabs",
+        "<all_urls>"
+    ],
+    "browser_action": {
+      "default_icon": {
+        "19": "assets/cnlogo.png"
+      },
+      "default_popup": "popup.html"
+    }
+}
