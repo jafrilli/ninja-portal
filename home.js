@@ -3,13 +3,14 @@ const freetimeCooldown = 1;
 const fm = new FreetimeManager()
 const nameToInfo = {}
 
+// runs once on start
 function setup() {
     fm.handleRefresh();
     addActivityTiles();
     addActivityTileListeners(fm);
 }
 
-// runs every two seconds
+// runs every second
 function loop() {
     updateStatus()
 }
