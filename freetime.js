@@ -1,28 +1,33 @@
-const FREETIME_START = 'kp_cn_freetime_start';
-const FREETIME_DURATION = 'kp_cn_freetime_duration';
-const FREETIME_END = 'kp_cn_freetime_end';
-const FREETIME_ACTIVE = 'kp_cn_freetime_active';
-
 function addMinutes(date, minutes) {
     return new Date(date.getTime() + minutes * 60000);
 }
 
 class FreetimeManager {
+
+    /**
+     * 
+     * @param {FStorageManager} sm the storage manager
+     */
+    constructor(sm) {
+        this.sm = sm;
+    }
+
     // initialize a new freetime session
+    getEnd() {
+        const end = sm.getEnd()
+        if (end) return new Date(parseInt(end))
+        return null
+    }
 
     getStart() {
-        const lastStart = localStorage.getItem(FREETIME_START);
-        if (!lastStart) return;
-        return new Date(parseInt(lastStart));
+        const start = sm.getStart()
+        if (start) return new Date(parseInt(start))
+        return null
     }
 
-    getEnd() {
-        const lastStart = localStorage.getItem(FREETIME_END);
-        if (!lastStart) return;
-        return new Date(parseInt(lastStart));
-    }
+    isFreetime() { return sm.getActive() == 'true' }
 
-    handleRefresh() {
+    init() {
         // check to see if someone is still on freetime
         if (!this.isFreetime()) return;
 
@@ -38,19 +43,19 @@ class FreetimeManager {
      * @param {number} minutes how many minutes this freetime session will last
      * @param {function} cb callback to run after session ends
      */
-    start(minutes) {
-        localStorage.setItem(FREETIME_START, new Date().getTime().toString());
-        localStorage.setItem(FREETIME_DURATION, minutes.toString())
-        localStorage.setItem(FREETIME_END, addMinutes(new Date(), minutes).getTime().toString())
-        localStorage.setItem(FREETIME_ACTIVE, 'true')
+    async start(minutes) {
+        await sm.setStart(new Date().getTime().toString())
+        await sm.setDuration(minutes.toString())
+        await sm.setEnd(addMinutes(new Date(), minutes).getTime().toString())
+        await sm.setActive('true')
+        // localStorage.setItem(FREETIME_START, new Date().getTime().toString());
+        // localStorage.setItem(FREETIME_DURATION, minutes.toString())
+        // localStorage.setItem(FREETIME_END, addMinutes(new Date(), minutes).getTime().toString())
+        // localStorage.setItem(FREETIME_ACTIVE, 'true')
 
         setTimeout(this.end, minutes * 1000 * 60)
 
         console.log('Started freetime session!')
-    }
-
-    isFreetime() {
-        return localStorage.getItem(FREETIME_ACTIVE) == 'true'
     }
 
     /**
@@ -58,7 +63,7 @@ class FreetimeManager {
      * @param {number} minutes how many minutes have passed
      */
     beenLongerThan(minutes) {
-        const start = this.getStart() ?? 0;
+        const start = this.getStart ?? 0;
         const now = new Date();
         return (now - start) > (minutes * 60 * 1000)
     }
@@ -76,7 +81,10 @@ class FreetimeManager {
     }
 
     end() {
-        localStorage.setItem(FREETIME_ACTIVE, 'false')
-        alert("Session is over")
+        //localStorage.setItem(FREETIME_ACTIVE, 'false')
+        console.log('ended')
+        sm.setActive('false').then(() => {
+            alert("Session is over")
+        })
     }
 }

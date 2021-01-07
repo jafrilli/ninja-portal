@@ -1,77 +1,25 @@
 const freetimeDuration = 1;
-const freetimeCooldown = 1;
-const fm = new FreetimeManager()
+const freetimeCooldown = 2;
+const sm = new FStorageManager()
+const fm = new FreetimeManager(sm)
 const nameToInfo = {}
 
 // runs once on start
-function setup() {
-    fm.handleRefresh();
+async function setup() {
+    // initialize the storage manager
+    await sm.init()
+    // initialize the freetime manager (handle refresh)
+    await fm.init();
+    // add the tiles
     addActivityTiles();
+    // add the activity tile listeners
     addActivityTileListeners(fm);
 }
 
 // runs every second
-function loop() {
-    updateStatus()
+async function loop() {
+    await updateStatus()
 }
-
-function updateStatus() {
-    // get dom elements
-    const active = document.getElementById("status-active");
-    const remaining = document.getElementById("status-remaining");
-    const cooldown = document.getElementById("status-cooldown");
-
-    const activeColor = "text-green-400"
-    const yellowColor = "text-yellow-400"
-    const inactiveColor = "text-red-400"
-
-    const isFreetime = fm.isFreetime();
-
-    active.className = ''
-    remaining.className = ''
-    cooldown.className = ''
-
-    // update active
-    if (isFreetime) {
-        active.innerHTML = 'ACTIVE'
-        active.classList.add(activeColor)
-    } else {
-        active.innerHTML = 'INACTIVE'
-        active.classList.add(inactiveColor)
-    }
-
-
-    // update remaining
-    if (isFreetime) {
-        const now = new Date();
-        const end = fm.getEnd()
-        const left = ((end - now) / (60 * 1000)).toFixed(1);
-        const leftT = new Date(end - now);
-
-        remaining.innerHTML = leftT.getMinutes() + ":" + leftT.getSeconds();
-
-        if (left < 2) remaining.classList.add(inactiveColor)
-        else if (left < 5) remaining.classList.add(yellowColor)
-        else remaining.classList.add(activeColor)
-    } else {
-        remaining.classList.add(inactiveColor)
-        remaining.innerHTML = "NONE";
-    }
-
-    // update cooldown
-    const left = fm.timeLeft(freetimeCooldown);
-    const leftT = fm.timeLeft(freetimeCooldown, true);
-    if (left && left >= 0) {
-        cooldown.innerHTML = leftT.getMinutes() + ":" + leftT.getSeconds();
-    } else {
-        cooldown.innerHTML = "NOW!";
-    }
-
-    if (left < 2) cooldown.classList.add(activeColor)
-    else if (left < 5) cooldown.classList.add(yellowColor)
-    else cooldown.classList.add(inactiveColor)
-}
-
 
 function addActivityTiles() {
     const activityContainer = document.getElementsByClassName("activity-container")[0];
@@ -92,23 +40,86 @@ function addActivityTileListeners(fm) {
     const activityTiles = document.getElementsByClassName("activity");
 
     for (const t of activityTiles) {
-        t.addEventListener('click', () => {
+        t.addEventListener('click', async () => {
             // if its been longer than an hour since last session & they are 
             // not in a session, then they can have another session
-            if (fm.beenLongerThan(freetimeCooldown) && !fm.isFreetime()) {
-                fm.start(freetimeDuration)
-            }
+            const timeLeft = fm.timeLeft(freetimeCooldown);
+            const isFreetime = fm.isFreetime()
             // if link is there and valid open link
-            if (fm.isFreetime()) {
+            if (isFreetime) {
                 if (nameToInfo[t.id] && nameToInfo[t.id].link) window.open(nameToInfo[t.id].link);
             } else {
-                // send alert
-                alert("You're currently not on freetime. You have to wait " + fm.timeLeft(freetimeCooldown).toFixed(0) + " minutes for your next freetime session!");
+                if (timeLeft <= 0) {
+                    fm.start(freetimeDuration)
+                    if (nameToInfo[t.id] && nameToInfo[t.id].link) window.open(nameToInfo[t.id].link);
+                }
+                else {
+                    alert("You're currently not on freetime. You have to wait " + timeLeft.toFixed(1) + " minutes for your next freetime session!");
+                }
             }
         })
     }
 }
 
+
+async function updateStatus() {
+    // get dom elements
+    const active = document.getElementById("status-active");
+    const remaining = document.getElementById("status-remaining");
+    const cooldown = document.getElementById("status-cooldown");
+
+    const activeColor = "text-green-400"
+    const yellowColor = "text-yellow-400"
+    const inactiveColor = "text-red-400"
+
+    const isFreetime = await fm.isFreetime();
+
+    active.className = ''
+    remaining.className = ''
+    cooldown.className = ''
+
+    // update active
+    if (isFreetime) {
+        active.innerHTML = 'ACTIVE'
+        active.classList.add(activeColor)
+    } else {
+        active.innerHTML = 'INACTIVE'
+        active.classList.add(inactiveColor)
+    }
+
+
+    // update remaining
+    if (isFreetime) {
+        const now = new Date();
+        const end = await fm.getEnd()
+        const left = ((end - now) / (60 * 1000)).toFixed(1);
+        const leftT = new Date(end - now);
+
+        remaining.innerHTML = leftT.getMinutes() + ":" + leftT.getSeconds();
+
+        if (left < 2) remaining.classList.add(inactiveColor)
+        else if (left < 5) remaining.classList.add(yellowColor)
+        else remaining.classList.add(activeColor)
+    } else {
+        remaining.classList.add(inactiveColor)
+        remaining.innerHTML = "NONE";
+    }
+
+    // update cooldown
+    const left = await fm.timeLeft(freetimeCooldown);
+    const leftT = await fm.timeLeft(freetimeCooldown, true);
+    if (left && left >= 0) {
+        cooldown.innerHTML = leftT.getMinutes() + ":" + leftT.getSeconds();
+    } else {
+        cooldown.innerHTML = "NOW!";
+    }
+
+    if (left < 2) cooldown.classList.add(activeColor)
+    else if (left < 5) cooldown.classList.add(yellowColor)
+    else cooldown.classList.add(inactiveColor)
+}
+
 // run
 setup()
+loop()
 setInterval(loop, 1000)
