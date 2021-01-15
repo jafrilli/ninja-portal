@@ -5,15 +5,18 @@ const fm = new FreetimeManager(sm)
 const nameToInfo = {}
 
 // runs once on start
-async function setup() {
+async function setup(then) {
     // initialize the storage manager
-    await sm.init()
-    // initialize the freetime manager (handle refresh)
-    await fm.init();
-    // add the tiles
-    addActivityTiles();
-    // add the activity tile listeners
-    addActivityTileListeners(fm);
+    sm.init(async (sm) => {
+        // initialize the freetime manager (handle refresh)
+        await fm.init();
+        // add the tiles
+        addActivityTiles();
+        // add the activity tile listeners
+        addActivityTileListeners(fm);
+        // CALLBACK HELL WTF
+        then()
+    })
 }
 
 // runs every second
@@ -28,7 +31,7 @@ function addActivityTiles() {
     activities.forEach(a => {
         nameToInfo[a.name] = a;
         html += `<div id="${a.name}" class="activity flex flex-col items-center">
-            <img src="${a.image}" class="transition duration-200 ease-in-out w-40 h-40 transform hover:scale-105 rounded-lg">
+            <img src="${a.image}" class="transition duration-200 ease-in-out w-40 h-40 object-cover transform hover:scale-105 rounded-lg">
             <div class="pt-2 text-lg">${a.name}</div>
         </div>`
     })
@@ -120,6 +123,8 @@ async function updateStatus() {
 }
 
 // run
-setup()
-loop()
-setInterval(loop, 1000)
+setup(() => {
+    // when setup is complete
+    loop()
+    setInterval(loop, 1000)
+})

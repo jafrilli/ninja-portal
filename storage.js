@@ -3,17 +3,21 @@ const FREETIME_DURATION = 'kp_cn_freetime_duration';
 const FREETIME_END = 'kp_cn_freetime_end';
 const FREETIME_ACTIVE = 'kp_cn_freetime_active';
 
-export class FStorageManager {
+class FStorageManager {
     constructor() {
         this.cache = {}
     }
 
-    async init() {
+    async init(cb) {
         // fetch the gogole storage, and replace cache with it
-        await chrome.storage.local.get([FREETIME_ACTIVE, FREETIME_START, FREETIME_DURATION, FREETIME_END], r => {
-            this.cache = r
+        // await chrome.storage.local.get([FREETIME_ACTIVE, FREETIME_START, FREETIME_DURATION, FREETIME_END], r => {
+        //     this.cache = r
+        //     cb(this)
+        // })
+        chrome.runtime.sendMessage({ action: "getAll" }, ({ response }) => {
+            this.cache = response;
+            cb(this)
         })
-        console.log('init complete')
     }
 
     getCache() {
@@ -21,26 +25,26 @@ export class FStorageManager {
     }
 
     getStart() { return this.cache[FREETIME_START] }
-    async setStart(v) {
+    setStart(v) {
         this.cache[FREETIME_START] = v;
-        await chrome.storage.local.set(this.cache);
+        chrome.runtime.sendMessage({ action: "setStart", payload: v })
     }
 
     getEnd() { return this.cache[FREETIME_END] }
-    async setEnd(v) {
+    setEnd(v) {
         this.cache[FREETIME_END] = v;
-        await chrome.storage.local.set(this.cache);
+        chrome.runtime.sendMessage({ action: "setEnd", payload: v })
     }
 
     getDuration() { return this.cache[FREETIME_DURATION] }
-    async setDuration(v) {
+    setDuration(v) {
         this.cache[FREETIME_DURATION] = v;
-        await chrome.storage.local.set(this.cache);
+        chrome.runtime.sendMessage({ action: "setDuration", payload: v })
     }
 
     getActive() { return this.cache[FREETIME_ACTIVE] }
-    async setActive(v) {
+    setActive(v) {
         this.cache[FREETIME_ACTIVE] = v;
-        await chrome.storage.local.set(this.cache);
+        chrome.runtime.sendMessage({ action: "setActive", payload: v })
     }
 }

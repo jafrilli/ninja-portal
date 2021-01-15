@@ -28,10 +28,14 @@ class FreetimeManager {
     isFreetime() { return sm.getActive() == 'true' }
 
     init() {
-        // check to see if someone is still on freetime
+        // if its not freetime then just return
         if (!this.isFreetime()) return;
 
+        // if they are on freetime, get the time remaining, and update the timeout
         const timeLeft = this.getEnd() - new Date()
+
+        console.log(timeLeft);
+
         // if timeleft is less than zero then end now
         if (timeLeft <= 0) return this.end();
         // create a new timeout using the time remaining

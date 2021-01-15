@@ -1,11 +1,11 @@
-const FREETIME_START = 'kp_cn_freetime_start';
-const FREETIME_DURATION = 'kp_cn_freetime_duration';
-const FREETIME_END = 'kp_cn_freetime_end';
-const FREETIME_ACTIVE = 'kp_cn_freetime_active';
-// setTimeout(function () {
+// check to see if on freetime or not
+// alert(window.location.host)
+// window.close()
+// chrome.runtime.sendMessage({ "action": "close" });
 
-//     for (const div of document.getElementsByTagName('div')) {
-//         div.innerHTML = "poop"
-//     }
-
-// }, 2000)
+// check to see if on freetime or not
+// let active = prompt('what is active')
+// chrome.runtime.sendMessage({ action: "setActive", payload: active })
+// chrome.runtime.sendMessage({ action: "getActive" }, ({ response }) => {
+//     alert(response)
+// })
