@@ -1,7 +1,12 @@
-const FREETIME_START = 'kp_cn_freetime_start';
-const FREETIME_DURATION = 'kp_cn_freetime_duration';
-const FREETIME_END = 'kp_cn_freetime_end';
-const FREETIME_ACTIVE = 'kp_cn_freetime_active';
+const FREETIME_START = 'np_cn_freetime_start';
+const FREETIME_END = 'np_cn_freetime_end';
+const FREETIME_ACTIVE = 'np_cn_freetime_active';
+
+const FREETIME_DURATION = 'np_cn_freetime_duration';
+const FREETIME_WHITELIST = 'np_cn_freetime_whitelist';
+const FREETIME_COOLDOWN = 'np_cn_freetime_cooldown';
+const FREETIME_CODE = 'np_cn_freetime_code';
+
 
 class FStorageManager {
     constructor() {
@@ -36,15 +41,37 @@ class FStorageManager {
         chrome.runtime.sendMessage({ action: "setEnd", payload: v })
     }
 
+    getActive() { return this.cache[FREETIME_ACTIVE] }
+    setActive(v) {
+        this.cache[FREETIME_ACTIVE] = v;
+        chrome.runtime.sendMessage({ action: "setActive", payload: v })
+    }
+
     getDuration() { return this.cache[FREETIME_DURATION] }
     setDuration(v) {
         this.cache[FREETIME_DURATION] = v;
         chrome.runtime.sendMessage({ action: "setDuration", payload: v })
     }
 
-    getActive() { return this.cache[FREETIME_ACTIVE] }
-    setActive(v) {
-        this.cache[FREETIME_ACTIVE] = v;
-        chrome.runtime.sendMessage({ action: "setActive", payload: v })
+    getCooldown() { return this.cache[FREETIME_ACTIVE] }
+    setCooldown(v) {
+        this.cache[FREETIME_COOLDOWN] = v;
+        chrome.runtime.sendMessage({ action: "setCooldown", payload: v })
+    }
+
+    getWhitelist() { return this.cache[FREETIME_WHITELIST] }
+    addToWhitelist(v) {
+        this.cache[FREETIME_WHITELIST] = this.cache[FREETIME_WHITELIST] + ',' + v;
+        chrome.runtime.sendMessage({ action: "addWhitelist", payload: v })
+    }
+    removeFromWhitelist(v) {
+        this.cache[FREETIME_WHITELIST] = this.cache[FREETIME_WHITELIST].split(',').filter(m => m != v).join(',')
+        chrome.runtime.sendMessage({ action: "removeWhitelist", payload: v })
+    }
+
+    getCode() { return this.cache[FREETIME_CODE] }
+    setCode(v) {
+        this.cache[FREETIME_CODE] = v;
+        chrome.runtime.sendMessage({ action: "setCode", payload: v })
     }
 }

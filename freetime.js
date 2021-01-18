@@ -49,11 +49,9 @@ class FreetimeManager {
      */
     async start(minutes) {
         await sm.setStart(new Date().getTime().toString())
-        await sm.setDuration(minutes.toString())
         await sm.setEnd(addMinutes(new Date(), minutes).getTime().toString())
         await sm.setActive('true')
         // localStorage.setItem(FREETIME_START, new Date().getTime().toString());
-        // localStorage.setItem(FREETIME_DURATION, minutes.toString())
         // localStorage.setItem(FREETIME_END, addMinutes(new Date(), minutes).getTime().toString())
         // localStorage.setItem(FREETIME_ACTIVE, 'true')
 
@@ -87,8 +85,7 @@ class FreetimeManager {
     end() {
         //localStorage.setItem(FREETIME_ACTIVE, 'false')
         console.log('ended')
-        sm.setActive('false').then(() => {
-            alert("Session is over")
-        })
+        sm.setActive('false')
+        alert("Session is over")
     }
 }
