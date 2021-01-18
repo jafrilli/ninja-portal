@@ -34,8 +34,6 @@ class FreetimeManager {
         // if they are on freetime, get the time remaining, and update the timeout
         const timeLeft = this.getEnd() - new Date()
 
-        console.log(timeLeft);
-
         // if timeleft is less than zero then end now
         if (timeLeft <= 0) return this.end();
         // create a new timeout using the time remaining
@@ -47,7 +45,9 @@ class FreetimeManager {
      * @param {number} minutes how many minutes this freetime session will last
      * @param {function} cb callback to run after session ends
      */
-    async start(minutes) {
+    async start() {
+        const minutes = parseInt(sm.getDuration())
+
         await sm.setStart(new Date().getTime().toString())
         await sm.setEnd(addMinutes(new Date(), minutes).getTime().toString())
         await sm.setActive('true')
@@ -75,7 +75,8 @@ class FreetimeManager {
      * @param {number} minutes how many minutes does each break have
      * @param {boolean} date should return a date object
      */
-    timeLeft(minutes, date) {
+    timeLeft(date) {
+        const minutes = parseInt(sm.getCooldown())
         const start = this.getStart() ?? 0;
         const now = new Date();
         if (date) return new Date((minutes * 60 * 1000) - (now - start));
@@ -83,8 +84,6 @@ class FreetimeManager {
     }
 
     end() {
-        //localStorage.setItem(FREETIME_ACTIVE, 'false')
-        console.log('ended')
         sm.setActive('false')
         alert("Session is over")
     }

@@ -53,7 +53,7 @@ class FStorageManager {
         chrome.runtime.sendMessage({ action: "setDuration", payload: v })
     }
 
-    getCooldown() { return this.cache[FREETIME_ACTIVE] }
+    getCooldown() { return this.cache[FREETIME_COOLDOWN] }
     setCooldown(v) {
         this.cache[FREETIME_COOLDOWN] = v;
         chrome.runtime.sendMessage({ action: "setCooldown", payload: v })

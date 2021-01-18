@@ -1,5 +1,3 @@
-const freetimeDuration = 1;
-const freetimeCooldown = 2;
 const sm = new FStorageManager()
 const fm = new FreetimeManager(sm)
 const nameToInfo = {}
@@ -46,14 +44,14 @@ function addActivityTileListeners(fm) {
         t.addEventListener('click', async () => {
             // if its been longer than an hour since last session & they are 
             // not in a session, then they can have another session
-            const timeLeft = fm.timeLeft(freetimeCooldown);
+            const timeLeft = fm.timeLeft();
             const isFreetime = fm.isFreetime()
             // if link is there and valid open link
             if (isFreetime) {
                 if (nameToInfo[t.id] && nameToInfo[t.id].link) window.open(nameToInfo[t.id].link);
             } else {
                 if (timeLeft <= 0) {
-                    fm.start(freetimeDuration)
+                    fm.start()
                     if (nameToInfo[t.id] && nameToInfo[t.id].link) window.open(nameToInfo[t.id].link);
                 }
                 else {
@@ -109,8 +107,8 @@ async function updateStatus() {
     }
 
     // update cooldown
-    const left = await fm.timeLeft(freetimeCooldown);
-    const leftT = await fm.timeLeft(freetimeCooldown, true);
+    const left = await fm.timeLeft();
+    const leftT = await fm.timeLeft(true);
     if (left && left >= 0) {
         cooldown.innerHTML = leftT.getMinutes() + ":" + leftT.getSeconds();
     } else {

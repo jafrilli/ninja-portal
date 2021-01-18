@@ -3,9 +3,72 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            background-image: url("https://franchiczar2.blob.core.windows.net/allfiles/assets/images/bg/bg.svg");
+            background-size: cover;
+            background-position: bottom center;
+            background-attachment: fixed;
+            background-color: #051b36;
+            transition: background-color .2s ease-in-out;
+            color: white;
+        }
+
+        .activity-container {
+            background-color: rgba(147, 197, 253, 0.25);
+        }
+    </style>
+    <!-- tailwind css -->
+    <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
+    <!-- <script src="https://kit.fontawesome.com/4487b36d44.js" crossorigin="anonymous"></script> -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+
     <title>Ninja Portal | Settings</title>
 </head>
 <body>
-    
+    <!-- header -->
+    <div class="p-6 flex items-center space-x-6">
+        <img src="assets/cnlogo.png" class="header-logo"></img>
+        <div class="font-sans font-semibold text-5xl">
+            Ninja Portal 
+            <span class="text-gray-200 text-base">by</span> 
+            <span class="text-blue-200 text-3xl">Code Ninjas Murphy</span>
+        </div>
+        
+    </div>
+    <!-- content -->
+    <div class="px-14 pt-2 flex gap-8">
+        <!-- games -->
+        <div class="flex-auto">
+            <div class="text-3xl font-medium p-3">Activities</div>
+            <div class="activity-container flex flex-wrap justify-evenly gap-8 rounded-lg p-8"></div>
+        </div>
+        <div>
+            <div class="text-3xl font-medium p-3">Details</div>
+            <div class="flex flex-col gap-6 bg-white rounded-lg p-6">
+                <div class="flex items-center info-section">
+                    <i class="fa fa-gamepad fa-3x text-black"></i>
+                    <div class="text-2xl p-3 text-black font-bold">Freetime Status:  <span id="status-active" class="text-green-400"></span></div>
+                </div>
+                <div class="flex items-center info-section">
+                    <i class="fa fa-clock-o fa-3x text-black"></i>
+                    <div class="text-2xl p-3 text-black font-bold">Time Left:  <span id="status-remaining" class="text-yellow-400"></span></div>
+                </div>
+                <div class="flex items-center info-section">
+                    <i class="fa fa-calendar fa-3x text-black"></i>
+                    <div class="text-2xl p-3 text-black font-bold">Next Freetime:  <span id="status-cooldown" class="text-yellow-400"></span></div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- time on each -->
+
+    </div>
+
+    <!-- scripts -->
+    <script type="text/javascript" src="storage.js"></script>
+    <script type="text/javascript" src="activities.js"></script>
+    <script type="text/javascript" src="freetime.js"></script>
+    <script type="text/javascript" src="settings.js"></script>
 </body>
 </html>

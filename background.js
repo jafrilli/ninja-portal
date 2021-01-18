@@ -35,18 +35,15 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 
         // freetime getters
         case "getAll":
-            sendResponse({
-                response: {
-                    start: localStorage.getItem(FREETIME_START),
-                    end: localStorage.getItem(FREETIME_END),
-                    active: localStorage.getItem(FREETIME_ACTIVE),
-
-                    duration: localStorage.getItem(FREETIME_DURATION),
-                    whitelist: localStorage.getItem(FREETIME_WHITELIST),
-                    cooldown: localStorage.getItem(FREETIME_COOLDOWN),
-                    code: localStorage.getItem(FREETIME_CODE)
-                }
-            })
+            const res = {}
+            res[FREETIME_START] = localStorage.getItem(FREETIME_START)
+            res[FREETIME_END] = localStorage.getItem(FREETIME_END)
+            res[FREETIME_ACTIVE] = localStorage.getItem(FREETIME_ACTIVE)
+            res[FREETIME_DURATION] = localStorage.getItem(FREETIME_DURATION)
+            res[FREETIME_WHITELIST] = localStorage.getItem(FREETIME_WHITELIST)
+            res[FREETIME_COOLDOWN] = localStorage.getItem(FREETIME_COOLDOWN)
+            res[FREETIME_CODE] = localStorage.getItem(FREETIME_CODE)
+            sendResponse({ response: res })
             break;
         case "getStart":
             sendResponse({ response: localStorage.getItem(FREETIME_START) })
