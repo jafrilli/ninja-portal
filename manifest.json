@@ -21,7 +21,6 @@
       "./content.js"
    ],
     "permissions": [
-        "activeTab",
         "storage",
         "declarativeContent",
         "tabs",

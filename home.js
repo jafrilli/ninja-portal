@@ -1,6 +1,6 @@
 const sm = new FStorageManager()
 const fm = new FreetimeManager(sm)
-const nameToInfo = {}
+let nameToInfo = {}
 
 // runs once on start
 async function setup(then) {
@@ -9,7 +9,7 @@ async function setup(then) {
         // initialize the freetime manager (handle refresh)
         await fm.init();
         // add the tiles
-        addActivityTiles();
+        addActivityTiles(sm);
         // add the activity tile listeners
         addActivityTileListeners(fm);
         // CALLBACK HELL WTF
@@ -22,8 +22,11 @@ async function loop() {
     await updateStatus()
 }
 
-function addActivityTiles() {
+function addActivityTiles(sm) {
     const activityContainer = document.getElementsByClassName("activity-container")[0];
+
+    nameToInfo = {}
+    const activities = sm.getActivities()
 
     let html = ''
     activities.forEach(a => {

@@ -40,9 +40,9 @@
         
     </div>
     <!-- content -->
-    <div class="px-14 pt-2 flex gap-8">
+    <div class="px-14 pt-2 pb-8 flex gap-8">
         <!-- settings -->
-        <div>
+        <div class="flex-auto">
             <div class="text-3xl font-medium p-3">Settings</div>
             <div class="activity-container flex flex-wrap flex-col justify-evenly gap-8 rounded-lg p-8">
                 <div class="flex flex-row justify-between items-center">
@@ -64,8 +64,10 @@
                 <div>
                     <div class="flex flex-row justify-between mb-2">
                         <label for="npwhitelist" class="text-xl text-blue-200 opacity-50">Whitelisted Host Names <span class="text-white text-sm">(updates immediately)</span></label>
-                        <input type="text" id="npwhitelist" name="npwhitelist" placeholder="Enter hostname" class="ml-5 rounded-lg px-3 py-2 input-bg focus:ring-2 focus:ring-blue-900 focus:outline-none">
-                        <button type="button" id="npwhitelistadd" class="ml-3 px-5 py-2 rounded-lg bg-blue-400">Add</button>
+                        <div>
+                            <input type="text" id="npwhitelist" name="npwhitelist" placeholder="Enter hostname" class="ml-5 rounded-lg px-3 py-2 input-bg focus:ring-2 focus:ring-blue-900 focus:outline-none">
+                            <button type="button" id="npwhitelistadd" class="ml-3 px-5 py-2 rounded-lg bg-blue-500">Add</button>
+                        </div>
                     </div>
 
                     <!-- list of whitelisted hostnames -->
@@ -75,12 +77,30 @@
                 </div>
             </div>
         </div>
+        <div class="flex-auto">
+            <div class="text-3xl font-medium p-3">Activity Manager</div>
+            <div class="activity-container rounded-lg p-8">
+                <label for="npduration" class="text-xl text-blue-200 opacity-50">Add an Activity <span class="text-white text-sm">(updates immediately)</span></label>
+
+                <div class="flex flex-col flex-wrap justify-between items-center gap-4 mt-4">
+                    <input placeholder="Activity Name" type="text" id="npactivityname" name="npactivityname" class="rounded-lg px-3 py-2 w-full input-bg focus:ring-2 focus:ring-blue-900 focus:outline-none">
+                    <input placeholder="Activity Link" type="text" id="npactivitylink" name="npactivitylink" class="rounded-lg px-3 py-2 w-full input-bg focus:ring-2 focus:ring-blue-900 focus:outline-none">
+                    <input placeholder="Activity Image Link" type="text" id="npactivityimagelink" name="npactivityimagelink" class="rounded-lg px-3 py-2 w-full input-bg focus:ring-2 focus:ring-blue-900 focus:outline-none">
+                    <button type="button" id="npactivityadd" class="ml-3 px-5 py-2 rounded-lg bg-blue-500">Add Activity</button>
+                </div>
+
+                <div class="text-xl text-blue-200 opacity-50 mt-8 mb-4">Available Activities</div>
+                <div id="activity-list" class="flex flex-wrap justify-evenly gap-8">
+                    <!-- activities go here -->
+                </div>
+
+            </div>
+        </div>
     </div>
 
     <!-- scripts -->
     <script type="text/javascript" src="storage.js"></script>
     <script type="text/javascript" src="activities.js"></script>
-    <script type="text/javascript" src="freetime.js"></script>
     <script type="text/javascript" src="settings.js"></script>
 </body>
 </html>

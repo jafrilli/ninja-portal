@@ -1,16 +1,14 @@
 const sm = new FStorageManager()
-const fm = new FreetimeManager(sm)
 const nameToInfo = {}
 
 // runs once on start
 async function setup(then) {
     // initialize the storage manager
     sm.init(async (sm) => {
-        // initialize the freetime manager (handle refresh)
-        await fm.init();
         // stuff
         setupFields(sm)
         setupList(sm)
+        setupActivityTiles(sm)
         // after init cb
         then()
     })
@@ -23,6 +21,11 @@ function setupFields(sm) {
 
     const whitelistField = document.getElementById('npwhitelist')
     const whitelistAdd = document.getElementById('npwhitelistadd')
+
+    const activityNameField = document.getElementById('npactivityname')
+    const activityLinkField = document.getElementById('npactivitylink')
+    const activityImageLinkField = document.getElementById('npactivityimagelink')
+    const activityAdd = document.getElementById('npactivityadd')
 
     durationField.value = sm.getDuration()
     cooldownField.value = sm.getCooldown()
@@ -49,6 +52,20 @@ function setupFields(sm) {
             whitelistField.value = ''
         }
     })
+
+    activityAdd.addEventListener('click', () => {
+        if (activityNameField.value.length > 0 && activityLinkField.value.length > 0 && activityImageLinkField.value.length > 0) {
+            sm.addToActivities({
+                name: activityNameField.value,
+                link: activityLinkField.value,
+                image: activityImageLinkField.value,
+            })
+            setupActivityTiles(sm)
+            activityNameField.value = ''
+            activityLinkField.value = ''
+            activityImageLinkField.value = ''
+        }
+    })
 }
 
 function setupList(sm) {
@@ -56,7 +73,6 @@ function setupList(sm) {
 
     listDiv.innerHTML = ''
 
-    console.log(sm.getWhitelist())
     if (sm.getWhitelist().length == 0) return;
     sm.getWhitelist().split(',').forEach(e => {
         listDiv.innerHTML += `<div class="flex flex-row items-center ml-5">
@@ -84,6 +100,49 @@ function setupListListeners(sm) {
         })
     }
 }
+
+let nti = {}
+
+function setupActivityTiles(sm) {
+    const activityContainer = document.getElementById("activity-list");
+
+    const activities = sm.getActivities()
+
+    activityContainer.innerHTML = ''
+    nti = {};
+
+    for (const a of activities) {
+        nti[a.name] = a;
+        activityContainer.innerHTML += `<div id="${a.name}" class="flex flex-col items-center">
+            <img src="${a.image}" class="activity transition duration-200 ease-in-out w-40 h-40 object-cover transform hover:scale-105 rounded-lg">
+            <div class="flex flex-row items-center mt-2">
+                <img id="${a.name + 'REMOVEICON'}" src="https://cdn0.iconfinder.com/data/icons/shift-free/32/Incorrect_Symbol-512.png" class="activityremove header-logo w-5 h-5"></img>
+                <div class="ml-2 text-lg">${a.name}</div>
+            </div>
+        </div>`
+    }
+    setupActivityTileListeners(sm)
+}
+
+function setupActivityTileListeners(sm) {
+    const activityTiles = document.getElementsByClassName("activity");
+    const activityRemIcons = document.getElementsByClassName("activityremove");
+
+    for (const t of activityTiles) {
+        t.addEventListener('click', async () => {
+            if (nti[t.id] && nti[t.id].link) window.open(nti[t.id].link);
+        })
+    }
+
+    for (const icon of activityRemIcons) {
+        icon.addEventListener('click', async () => {
+            console.log(icon.id.replace('REMOVEICON', ''))
+            sm.removeFromActivities(icon.id.replace('REMOVEICON', ''))
+            setupActivityTiles(sm)
+        })
+    }
+}
+
 
 // runs every second
 async function loop() {

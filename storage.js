@@ -7,6 +7,8 @@ const FREETIME_WHITELIST = 'np_cn_freetime_whitelist';
 const FREETIME_COOLDOWN = 'np_cn_freetime_cooldown';
 const FREETIME_CODE = 'np_cn_freetime_code';
 
+const FREETIME_ACTIVITIES = 'np_cn_freetime_activities';
+
 
 class FStorageManager {
     constructor() {
@@ -74,5 +76,18 @@ class FStorageManager {
     setCode(v) {
         this.cache[FREETIME_CODE] = v;
         chrome.runtime.sendMessage({ action: "setCode", payload: v })
+    }
+
+    getActivities() { return this.cache[FREETIME_ACTIVITIES] }
+    addToActivities(obj) {
+        let activities = this.cache[FREETIME_ACTIVITIES]
+        activities.push(obj)
+        this.cache[FREETIME_ACTIVITIES] = activities
+        chrome.runtime.sendMessage({ action: "addActivity", payload: obj })
+    }
+    removeFromActivities(name) {
+        let activities = this.cache[FREETIME_ACTIVITIES]
+        this.cache[FREETIME_ACTIVITIES] = activities.filter(a => a.name != name);
+        chrome.runtime.sendMessage({ action: "removeActivity", payload: name })
     }
 }
