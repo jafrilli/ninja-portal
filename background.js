@@ -19,7 +19,8 @@ chrome.runtime.onInstalled.addListener(() => {
     localStorage.setItem(FREETIME_WHITELIST, [
         "google.com",
         "youtube.com",
-        "stackoverflow.com"
+        "stackoverflow.com",
+        "chrome-extension://"
     ].join(','))
     localStorage.setItem(FREETIME_CODE, 1290)
     localStorage.setItem(FREETIME_ACTIVITIES, JSON.stringify([
@@ -57,6 +58,21 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     switch (message.action) {
         case "close":
             chrome.tabs.remove(sender.tab.id);
+            break;
+        case "closeAll":
+            // close all tabs that are not whitelisted
+            console.log('something')
+            chrome.tabs.getAllInWindow(null, function (tabs) {
+                for (const tab of tabs) {
+                    let included = false;
+                    localStorage.getItem(FREETIME_WHITELIST).split(',').forEach(host => {
+                        if (tab.url.includes(host)) {
+                            included = true;
+                        }
+                    })
+                    if (!included) chrome.tabs.remove(tab.id)
+                }
+            });
             break;
 
         // freetime getters

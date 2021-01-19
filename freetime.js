@@ -85,6 +85,7 @@ class FreetimeManager {
 
     end() {
         sm.setActive('false')
+        chrome.runtime.sendMessage({ action: 'closeAll' })
         alert("Session is over")
     }
 }
