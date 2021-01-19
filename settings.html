@@ -15,7 +15,11 @@
         }
 
         .activity-container {
-            background-color: rgba(147, 197, 253, 0.25);
+            background-color: #02101F;
+        }
+
+        .input-bg {
+            background-color: #111E2D;
         }
     </style>
     <!-- tailwind css -->
@@ -31,38 +35,46 @@
         <img src="assets/cnlogo.png" class="header-logo"></img>
         <div class="font-sans font-semibold text-5xl">
             Ninja Portal 
-            <span class="text-gray-200 text-base">by</span> 
-            <span class="text-blue-200 text-3xl">Code Ninjas Murphy</span>
+            <span class="text-blue-200 text-4xl">Settings</span>
         </div>
         
     </div>
     <!-- content -->
     <div class="px-14 pt-2 flex gap-8">
-        <!-- games -->
-        <div class="flex-auto">
-            <div class="text-3xl font-medium p-3">Activities</div>
-            <div class="activity-container flex flex-wrap justify-evenly gap-8 rounded-lg p-8"></div>
-        </div>
+        <!-- settings -->
         <div>
-            <div class="text-3xl font-medium p-3">Details</div>
-            <div class="flex flex-col gap-6 bg-white rounded-lg p-6">
-                <div class="flex items-center info-section">
-                    <i class="fa fa-gamepad fa-3x text-black"></i>
-                    <div class="text-2xl p-3 text-black font-bold">Freetime Status:  <span id="status-active" class="text-green-400"></span></div>
+            <div class="text-3xl font-medium p-3">Settings</div>
+            <div class="activity-container flex flex-wrap flex-col justify-evenly gap-8 rounded-lg p-8">
+                <div class="flex flex-row justify-between items-center">
+                    <label for="npduration" class="text-xl text-blue-200 opacity-50">Freetime Duration <span class="text-white text-sm">(updates next session)</span></label>
+                    <input type="number" id="npduration" name="npduration" class="ml-5 rounded-lg px-3 py-2 input-bg focus:ring-2 focus:ring-blue-900 focus:outline-none">
                 </div>
-                <div class="flex items-center info-section">
-                    <i class="fa fa-clock-o fa-3x text-black"></i>
-                    <div class="text-2xl p-3 text-black font-bold">Time Left:  <span id="status-remaining" class="text-yellow-400"></span></div>
+
+                <div class="flex flex-row justify-between items-center">
+                    <label for="npcooldown" class="text-xl text-blue-200 opacity-50">Freetime Cooldown <span class="text-white text-sm">(updates immediately)</span></label>
+                    <input type="number" id="npcooldown" name="npcooldown" class="ml-5 rounded-lg px-3 py-2 input-bg focus:ring-2 focus:ring-blue-900 focus:outline-none">
                 </div>
-                <div class="flex items-center info-section">
-                    <i class="fa fa-calendar fa-3x text-black"></i>
-                    <div class="text-2xl p-3 text-black font-bold">Next Freetime:  <span id="status-cooldown" class="text-yellow-400"></span></div>
+
+                <div class="flex flex-row justify-between items-center">
+                    <label for="npcode" class="text-xl text-blue-200 opacity-50">Sensei Code <span class="text-white text-sm">(updates immediately)</span></label>
+                    <input type="number" id="npcode" name="npcode" class="ml-5 rounded-lg px-3 py-2 input-bg focus:ring-2 focus:ring-blue-900 focus:outline-none">
+                </div>
+
+                <!-- whitelisted hostnames -->
+                <div>
+                    <div class="flex flex-row justify-between mb-2">
+                        <label for="npwhitelist" class="text-xl text-blue-200 opacity-50">Whitelisted Host Names <span class="text-white text-sm">(updates immediately)</span></label>
+                        <input type="text" id="npwhitelist" name="npwhitelist" placeholder="Enter hostname" class="ml-5 rounded-lg px-3 py-2 input-bg focus:ring-2 focus:ring-blue-900 focus:outline-none">
+                        <button type="button" id="npwhitelistadd" class="ml-3 px-5 py-2 rounded-lg bg-blue-400">Add</button>
+                    </div>
+
+                    <!-- list of whitelisted hostnames -->
+                    <div id="hostlist" class="flex flex-col gap-2">
+                        <!-- where the items will go -->
+                    </div>
                 </div>
             </div>
         </div>
-        
-        <!-- time on each -->
-
     </div>
 
     <!-- scripts -->

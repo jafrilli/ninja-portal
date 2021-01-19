@@ -20,7 +20,7 @@ chrome.runtime.onInstalled.addListener(() => {
         "youtube.com",
         "stackoverflow.com"
     ].join(','))
-    localStorage.setItem(FREETIME_CODE, 1270)
+    localStorage.setItem(FREETIME_CODE, 1290)
 })
 
 // when a page gets loaded

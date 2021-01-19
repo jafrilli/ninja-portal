@@ -61,11 +61,12 @@ class FStorageManager {
 
     getWhitelist() { return this.cache[FREETIME_WHITELIST] }
     addToWhitelist(v) {
-        this.cache[FREETIME_WHITELIST] = this.cache[FREETIME_WHITELIST] + ',' + v;
+        this.cache[FREETIME_WHITELIST] = this.cache[FREETIME_WHITELIST].length > 1 ? this.cache[FREETIME_WHITELIST] + ',' + v : v;
         chrome.runtime.sendMessage({ action: "addWhitelist", payload: v })
     }
     removeFromWhitelist(v) {
         this.cache[FREETIME_WHITELIST] = this.cache[FREETIME_WHITELIST].split(',').filter(m => m != v).join(',')
+        if (this.cache[FREETIME_WHITELIST].length == 0) this.cache[FREETIME_WHITELIST] = '';
         chrome.runtime.sendMessage({ action: "removeWhitelist", payload: v })
     }
 
