@@ -18,7 +18,8 @@
         }
     ],
     "web_accessible_resources": [
-      "./content.js"
+      "./content.js",
+      "./blocked.html"
    ],
     "permissions": [
         "storage",

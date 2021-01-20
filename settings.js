@@ -5,6 +5,12 @@ const nameToInfo = {}
 async function setup(then) {
     // initialize the storage manager
     sm.init(async (sm) => {
+        // authenticate
+        const res = prompt('You must be a sensei in order to access settings. Enter the sensei code:')
+        if (res != sm.getCode()) {
+            chrome.runtime.sendMessage({ action: "close" })
+            return;
+        }
         // stuff
         setupFields(sm)
         setupList(sm)
