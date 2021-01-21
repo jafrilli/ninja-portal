@@ -14,15 +14,16 @@ chrome.runtime.onInstalled.addListener(() => {
     localStorage.setItem(FREETIME_ACTIVE, 'false');
 
     // default settings
-    localStorage.setItem(FREETIME_DURATION, 1)
-    localStorage.setItem(FREETIME_COOLDOWN, 2)
+    localStorage.setItem(FREETIME_DURATION, 15)
+    localStorage.setItem(FREETIME_COOLDOWN, 60)
     localStorage.setItem(FREETIME_WHITELIST, [
+        "code.ninja",
+        "codeninjas.com",
         "google.com",
-        "youtube.com",
         "stackoverflow.com",
-        "chrome-extension://"
+        "chrome-extension://",
     ].join(','))
-    localStorage.setItem(FREETIME_CODE, 1290)
+    localStorage.setItem(FREETIME_CODE, 0000)
     localStorage.setItem(FREETIME_ACTIVITIES, JSON.stringify([
         {
             "name": "Roblox",
