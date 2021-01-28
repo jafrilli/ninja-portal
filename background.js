@@ -23,7 +23,7 @@ chrome.runtime.onInstalled.addListener(() => {
         "stackoverflow.com",
         "chrome-extension://",
     ].join(','))
-    localStorage.setItem(FREETIME_CODE, 0000)
+    localStorage.setItem(FREETIME_CODE, '0000')
     localStorage.setItem(FREETIME_ACTIVITIES, JSON.stringify([
         {
             "name": "Roblox",

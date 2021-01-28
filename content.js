@@ -22,7 +22,7 @@ chrome.runtime.sendMessage({ action: "getActive" }, ({ response }) => {
                 chrome.runtime.sendMessage({ action: "getCode" }, ({ response }) => {
                     const res = prompt("You cannot access this website (" + window.location.hostname + ") right now! If you would like access, ask a sensei to enter a valid code:")
                     // if no code or code invalid, close tab
-                    if (!res || res != response) {
+                    if (!res || res.toString() != response) {
                         chrome.runtime.sendMessage({ action: "close" })
                     }
                 })

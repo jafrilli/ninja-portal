@@ -7,7 +7,7 @@ async function setup(then) {
     sm.init(async (sm) => {
         // authenticate
         const res = prompt('You must be a sensei in order to access settings. Enter the sensei code:')
-        if (res != sm.getCode()) {
+        if (res && res.toString() != sm.getCode()) {
             chrome.runtime.sendMessage({ action: "close" })
             return;
         }
@@ -47,8 +47,7 @@ function setupFields(sm) {
         else cooldownField.value = 1
     })
     codeField.addEventListener('change', (event) => {
-        if (parseFloat(event.target.value) > 0) sm.setCode(event.target.value)
-        else codeField.value = 1
+        sm.setCode(event.target.value.toString())
     })
 
     whitelistAdd.addEventListener('click', () => {
